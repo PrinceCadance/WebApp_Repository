@@ -2,3 +2,40 @@
     margin: 0;
     padding: 0;
 }
+
+body {
+	width: 95%;
+	margin: 0 auto;
+	background: #ccc;	
+}
+
+main, 
+header,
+footer { 
+	width: 100%; 
+	display: flex; 
+	padding: 1em;
+	margin: 1em;
+}
+
+.comment-input {
+	flex: 1 1 360px;
+	
+}
+
+.comments {
+	flex: 1 1 360px;
+
+}
+
+.comments p {
+	padding-left: 0.5em;
+}
+
+.comments p:nth-child(even) {
+	background-color: lavender;
+}
+
+.comments p:nth-child(odd) {
+	background-color: green;
+}
