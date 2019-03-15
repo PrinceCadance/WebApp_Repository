@@ -11,7 +11,9 @@ $( function()  {
 
 		if ($commentInput.val() !== "") {
 			$new_comment = $("<p>").text($commentInput.val());
+			$new_comment.hide();
 			$(".comments").append($new_comment);
+			$new_comment.fadeIn();
 			$commentInput.val("");			
 		}
 	} // end processCommentInput
