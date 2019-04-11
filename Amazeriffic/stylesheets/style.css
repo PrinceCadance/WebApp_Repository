@@ -73,7 +73,6 @@ li {
 header nav {
 	float: right;
 	width: 285px;
-	text-align: center;
 }
 
 main {
@@ -120,4 +119,31 @@ ul .left{
 
 ul .right{
 	float: right;
+}
+
+.tabs a span {
+	display: inline-block;
+	border-radius: 5px 5px 0 0;
+	width: 100px;
+	margin-right: 10px;
+	text-align: center;
+	background: #ddd;
+	padding: 5px;
+}
+
+.tabs a span.active {
+	background: #eee;
+}
+
+main .content {
+	padding: 30px 10px 30px 10px;
+	border-radius: 0 5px 5px 5px;
+	background: #eee;
+}
+
+main .content li {
+	border-radius: 5px;
+	padding: 3px;
+	background: #eff;
+	margin-bottom: 10px;
 }
