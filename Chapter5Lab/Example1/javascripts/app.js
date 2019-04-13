@@ -1,14 +1,12 @@
-var main = function () {
+var main = function() {
     "use strict";
 
-    $.getJSON("cards/aceOfSpades.json", function (card) {
+    $.getJSON("cards/aceOfSpades.json", function(card) {
         // create an element to hold the card
         var $cardParagraph = $("<p>");
-
-        // create the 
-        $cardParagraph.text(card.rank + " of " + card.suit);
-
-        // append the card paragraph to main
+        // add text to the paragraph element
+        $cardParagraph.text(card.rank + " of " + card.suit );
+        // append the card paragraph to main 
         $("main").append($cardParagraph);
     });
 
@@ -16,6 +14,7 @@ var main = function () {
         var $list = $("<ul>");
 
         // hand is an array, so we can iterate over it
+        // using a forEach loop
         hand.forEach(function (card) {
             // create a list item to hold the card
             // and append it to the list

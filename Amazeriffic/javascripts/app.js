@@ -1,14 +1,43 @@
 "use strict";
 
-var main = function () {
-	var toDos = [
-		"Finish writing this book",
-		"Take Gracie to the park",
-		"Answer emails",
-		"Prep for Monday's class",
-		"Make up some new ToDos",
-		"Get Groceries"
-	];
+var organizeByTags = function (toDoObjects) {
+	// create empty tags array
+	var tags = [];
+
+	// iterate over all toDos
+	toDoObjects.forEach(function (toDo) {
+		// iterate over each tag in this Todo
+		toDo.tags.forEach(function (tag) {
+			// make sure the tag is not already in the tag array
+			if (tags.indexOf(tag) === -1) {
+				tags.push(tag);
+			}
+		});
+	});
+	console.log(tags);
+
+	var tagObjects = tags.map(function (tag) {
+		// here we find all the to-do objects
+		// that contain that tag 
+		var toDosWithTag = [];
+		toDoObjects.forEach(function (toDo) {
+			// check to make sure the result of 
+			// of indexOf is *not* equal to -1
+			if (toDo.tags.indexOf(tag) !== -1) {
+				toDosWithTag.push(toDo.description)
+			}
+		});
+		return { "name": tag, "toDos": toDosWithTag};
+	});
+	return tagObjects;
+};
+
+
+var main = function (toDoObjects) {
+	var toDos = toDoObjects.map(function (toDo) {
+		// we'll just return the description of this toDoObject
+		return toDo.description;
+	});
 
 	$(".tabs span").toArray().forEach(function (element) {
 		// Create a click handler for this element
@@ -36,16 +65,38 @@ var main = function () {
 					$content.append($("<li>").text(todo));
 				});
 			} else if ($element.parent().is(":nth-child(3)")) {
-				$input = $("<input>"),
-				$button = $("<button>").text("+");
+				// This is the tags tab code
+				var organizedByTag = organizeByTags(toDoObjects);
+				organizedByTag.forEach(function (tag) {
+					var $tagName = $("<h3>").text(tag.name),
+						$content = $("<ul>");
 
-				$button.on("click", function() {
-					if ($input.val() !== "") {
-						toDos.push($input.val());
-						$input.val("");
-					}
+					tag.toDos.forEach(function (description) {
+						var $li = $("<li>").text(description);
+						$content.append($li);
+					});
+					$("main .content").append($tagName);
+					$("main .content").append($content);
 				});
-				$content = $("<div>").append($input).append($button);
+			} else if ($element.parent().is(":nth-child(4)")) {
+				var $input = $("<input>").addClass("description"),
+					$inputLabel = $("<p>").text("Description: "),
+					$tagInput = $("<input>").addClass("tags"),
+					$tagLabel = $("<p>").text("Tags: "),
+					$button = $("<button>").text("+");
+
+				$button.on("click", function () {
+					var description = $input.val(),
+						tags = $tagInput.val().split(","); // split on commas
+						toDoObjects.push({"description" : description, "tags" : tags});
+						// update toDos
+						toDos = toDoObjects.map(function (toDo) {
+							return toDo.Description;
+						});
+						$input.val("");
+						$tagInput.val("");
+				});
+				$content = $("<div>").append($inputLabel).append($input).append($tagLabel).append($tagInput).append($button);
 			}
 			$("main .content").append($content);
 
@@ -56,4 +107,9 @@ var main = function () {
 	$(".tabs a:first-child span").trigger("click");
 };
 
-$(document).ready(main);
+$(document).ready(function() {
+	$.getJSON("todos.json", function(toDoObjects) {
+		// call main with the to-dos as an argument
+		main(toDoObjects);
+	});
+});
