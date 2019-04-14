@@ -1,24 +1,44 @@
-var main = function () {
-    "use strict";
+"use strict";
+var requestURLBase = "http://api.flickr.com/services/feeds/photos_public.gne?format=json&jsoncallback=?&tags=";
+var requestURL
+var main = function (imageObjects) {
+    
+    var displayImage = function(imageIndex) {
+        if (imageIndex === imageObjects.items.length) {
+            imageIndex = 0;
+        }
+        var $image = $("<img>").hide();
+        $("main .photos img").fadeOut();
+        $("main .photos").empty();
+        $image.attr("src", imageObjects.items[imageIndex].media.m);
+        $("main .photos").append($image);
+        $image.fadeIn();
 
-    var requestURL = "http://api.flickr.com/services/feeds/photos_public.gne?tags=dog&format=json&jsoncallback=?";
-
-    $.getJSON(requestURL, function(flickrResponse) {
-        flickrResponse.items.forEach(function (photo) {
-            // create a new jQuery element to hold the image
-            // but hide it so we can fade it in
-            var $img = $("<img>").hide();
-
-            // set the attribute to the url
-            // contained in the response
-            $img.attr("src", photo.media.m);
-
-            // attach the img tag to the main
-            // photos element and then fade it in
-            $("main .photos").append($img);
-            $img.fadeIn();
-        });
-    });
+        setTimeout(function () {
+            imageIndex += 1;
+            displayImage(imageIndex);
+        }, 3000);
+    };
+    displayImage(0);
 };
 
-$(document).ready(main);
+$(document).ready(function() {
+    $("button").on("click", function() {
+        if ($("input").val() !== "") {
+            requestURL = requestURLBase + $("input").val();
+            console.log($("input").val());
+        } else {
+            requestURL = requestURLBase + "dog";
+        }
+        console.log(requestURL);
+        $.getJSON(requestURL, function (imageObjects) {
+            console.log(imageObjects);
+            main(imageObjects);
+        });
+    });
+});
+
+
+
+
+
