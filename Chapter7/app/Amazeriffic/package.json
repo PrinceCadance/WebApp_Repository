@@ -1,9 +1,11 @@
 {
 	"name": "Amazeriffic",
-	"description": "A todo list app",
+	"description": "The best to-do list app in the hsitory of the world",
 	"version": "0.0.1",
 	"dependencies": {
 		"express": "^3.21.2",
+		"ntwitter": "0.5.x",
+		"redis": "0.8.x",
 		"mongoose": "3.6.x"
 	}
 }
